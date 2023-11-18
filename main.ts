@@ -1,22 +1,10 @@
-import { executeWebhook } from "aoc-dailies/lib/discord/webhook.ts";
+import { getAoCDaily } from "aoc-dailies/lib/aoc/mod.ts";
 import { load } from "./deps.ts";
 
 const main = async () => {
-  await load({ export: true });
-  const discordWebhookURL = Deno.env.get("DISCORD_WEBHOOK_URL");
-  if (!discordWebhookURL) {
-    throw new Error("Discord Webhook not set");
-  }
-  await executeWebhook({
-    url: discordWebhookURL,
-    data: {
-      embeds: [{
-        color: 0x00cc00,
-        title: "Title of Question",
-        description: "This is the AOC daily",
-      }],
-    },
-  });
+  const daily = await getAoCDaily({ year: 2022, day: 1 });
+  console.log(daily.title);
+  console.log(daily.description);
 };
 
 if (import.meta.main) {
