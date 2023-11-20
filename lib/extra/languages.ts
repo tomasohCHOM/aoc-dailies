@@ -9,15 +9,20 @@ const PROGRAMMING_LANGUAGES = [
   "Rust",
   "Go",
   "Lua",
+  "Ruby",
   "PHP",
   "Swift",
   "Kotlin",
   "Elixir",
-  "Assembly",
+  "Zig",
+  "OCaml",
+  "Julia",
+  "Dart",
+  "Assembly :)",
 ];
 
 /**
- * pickRandom picks a random snack from the list of snacks.
+ * pickRandom picks a random programming language from the list.
  */
 export function pickRandom(): string {
   const randomIndex = ~~(Math.random() * PROGRAMMING_LANGUAGES.length);
