@@ -3,6 +3,7 @@ import { getAoCDaily } from "aoc-dailies/lib/aoc/mod.ts";
 import { load } from "./deps.ts";
 
 async function prepareDiscordWebhook() {
+  console.log("Preparing Discord Webhook Execution");
   await load({ export: true });
   const discordWebhookURL = Deno.env.get("DISCORD_WEBHOOK_URL");
   if (!discordWebhookURL) throw new Error("Discord Webhook not set");
@@ -11,6 +12,7 @@ async function prepareDiscordWebhook() {
 
   // if (date.getMonth() !== 11) {
   //   // Only execute in December.
+  //   console.log("Not December yet :(");
   //   return;
   // }
 
@@ -33,6 +35,9 @@ async function prepareDiscordWebhook() {
 
 async function main() {
   // Execute the webhook at midnight EST, or 5:00 AM UTC.
+  // await Deno.cron("prepareDiscordWebhook", "0 5 * * *", prepareDiscordWebhook);
+
+  // Execute the webhook every minute (testing purposes)
   await Deno.cron("prepareDiscordWebhook", "* * * * *", prepareDiscordWebhook);
 }
 
