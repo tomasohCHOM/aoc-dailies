@@ -35,10 +35,10 @@ async function prepareDiscordWebhook() {
 
 async function main() {
   // Execute the webhook at midnight EST, or 5:00 AM UTC.
-  // await Deno.cron("prepareDiscordWebhook", "0 5 * * *", prepareDiscordWebhook);
+  await Deno.cron("prepareDiscordWebhook", "0 5 * * *", prepareDiscordWebhook);
 
   // Execute the webhook every minute (testing purposes)
-  await Deno.cron("prepareDiscordWebhook", "* * * * *", prepareDiscordWebhook);
+  // await Deno.cron("prepareDiscordWebhook", "* * * * *", prepareDiscordWebhook);
 }
 
 if (import.meta.main) {
