@@ -1,6 +1,8 @@
+import { getProgrammingLanguage } from "aoc-dailies/lib/extra/languages.ts";
 import { executeWebhook } from "aoc-dailies/lib/discord/webhook.ts";
 import { getAoCDaily } from "aoc-dailies/lib/aoc/mod.ts";
 import { load } from "aoc-dailies/deps.ts";
+import { getRandomMessage } from "aoc-dailies/lib/extra/messages.ts";
 
 // executeDiscordWebhook executes the Discord webhook at 5:00 AM UTC (midnight EST).
 async function executeDiscordWebhook() {
@@ -9,19 +11,29 @@ async function executeDiscordWebhook() {
   // For testing, we set the year to (current year - 1) = 2023 - 1 = 2022 data
   const year = date.getFullYear() - 1;
   const day = date.getDate();
-  const { title, description } = await getAoCDaily({ year, day });
+  const { title, description, url } = await getAoCDaily({ year, day });
 
   const discordWebhookURL = Deno.env.get("DISCORD_WEBHOOK_URL")!;
   await executeWebhook({
     url: discordWebhookURL,
     data: {
-      embeds: [
-        {
-          color: 0x00cc00,
-          title: `Advent of Code ${year} Day ${day}: ${title}`,
-          description: description.substring(0, 49) + "…",
-        },
-      ],
+      embeds: [{
+        color: 0x00cc00,
+        url,
+        title: `---*** Advent of Code ${year} Day ${day}: ${title} ***---`,
+        fields: [{
+          name: "Puzzle Description:",
+          value: description.length > 500
+            ? description.substring(0, 499) + "…"
+            : description,
+        }, {
+          name: "Fun Challenge - Complete the program using:",
+          value: getProgrammingLanguage(day),
+        }, {
+          name: "Message of the day:",
+          value: getRandomMessage(),
+        }],
+      }],
     },
   });
 }
