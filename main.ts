@@ -32,7 +32,7 @@ async function main() {
   // Execute the webhook at midnight EST, or 5:00 AM UTC.
   await Deno.cron(
     "executeDiscordWebhook",
-    "0 5 * 11,12 *",
+    "0 7 * 11,12 *",
     executeDiscordWebhook,
   );
 }
