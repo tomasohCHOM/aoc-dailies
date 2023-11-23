@@ -1,31 +1,19 @@
 const PROGRAMMING_LANGUAGES = [
-  "C",
-  "C++",
-  "C#",
-  "Java",
-  "JavaScript",
-  "TypeScript",
   "Python",
-  "Rust",
+  "JavaScript/TypeScript",
+  "Java",
+  "C#",
+  "C/C++",
   "Go",
-  "Lua",
-  "Ruby",
-  "PHP",
-  "Swift",
-  "Kotlin",
-  "Elixir",
-  "Zig",
-  "OCaml",
-  "Julia",
-  "Dart",
+  "Rust",
   "Assembly :)",
 ];
 
 /**
- * pickRandom picks a random programming language from the list.
+ * getProgrammingLanguage returns a programming language from the list based on the day of the month.
  */
-export function pickRandom(): string {
-  const randomIndex = ~~(Math.random() * PROGRAMMING_LANGUAGES.length);
-  const randomSnack = PROGRAMMING_LANGUAGES[randomIndex];
-  return randomSnack;
+export function getProgrammingLanguage(day: number): string {
+  const programmingLanguage =
+    PROGRAMMING_LANGUAGES[day % PROGRAMMING_LANGUAGES.length];
+  return programmingLanguage;
 }
