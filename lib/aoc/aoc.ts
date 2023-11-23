@@ -30,6 +30,11 @@ export interface AoCDaily {
    * description is the description of the puzzle.
    */
   description: string;
+
+  /**
+   * url is the url path of the puzzle.
+   */
+  url: string;
 }
 
 /**
@@ -54,7 +59,7 @@ export async function getAoCDaily(options: AoCDailyOptions): Promise<AoCDaily> {
     throw new Error("Failed to parse description!");
   }
 
-  return { title, description };
+  return { title, description, url };
 }
 
 /**
