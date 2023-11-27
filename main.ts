@@ -1,15 +1,14 @@
 import { getProgrammingLanguage } from "aoc-dailies/lib/extra/languages.ts";
 import { executeWebhook } from "aoc-dailies/lib/discord/webhook.ts";
 import { getAoCDaily } from "aoc-dailies/lib/aoc/mod.ts";
-import { load } from "aoc-dailies/deps.ts";
+import { load, retry } from "aoc-dailies/deps.ts";
 import { getRandomMessage } from "aoc-dailies/lib/extra/messages.ts";
 
 // executeDiscordWebhook executes the Discord webhook at 5:00 AM UTC (midnight EST).
 async function executeDiscordWebhook() {
   const date = new Date();
 
-  // For testing, we set the year to (current year - 1) = 2023 - 1 = 2022 data
-  const year = date.getFullYear() - 1;
+  const year = date.getFullYear();
   const day = date.getDate();
   const { title, description, url } = await getAoCDaily({ year, day });
 
@@ -28,7 +27,7 @@ async function executeDiscordWebhook() {
             : description,
         }, {
           name: "Fun Challenge - Complete the program using:",
-          value: getProgrammingLanguage(day),
+          value: getProgrammingLanguage(day - 1),
         }, {
           name: "Message of the day:",
           value: getRandomMessage(),
@@ -38,15 +37,19 @@ async function executeDiscordWebhook() {
   });
 }
 
+// retryPromise will attempt to execute the callback until success or after 60 seconds.
+async function retryPromise() {
+  await retry(executeDiscordWebhook);
+}
+
 async function main() {
   await load({ export: true });
 
-  // Execute the webhook at midnight EST, or 5:00 AM UTC.
+  // Execute at midnight EST, or 5:00 AM UTC.
   await Deno.cron(
-    "executeDiscordWebhook",
-    // TODO: Change to "0 5 * 12 *".
-    "0 5 * 11,12 *",
-    executeDiscordWebhook,
+    "Executing Discord webhook via retryPromise",
+    "0 5 1-25 12 *",
+    retryPromise,
   );
 }
 
