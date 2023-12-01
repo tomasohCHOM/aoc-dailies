@@ -48,8 +48,7 @@ async function main() {
   // Execute at midnight EST, or 5:00 AM UTC.
   await Deno.cron(
     "Executing Discord webhook via retryPromise",
-    // "0 5 1-25 12 *",
-    "*/5 * * * *",
+    "0 5 1-25 12 *",
     retryPromise,
   );
 }
