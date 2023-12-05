@@ -4,22 +4,25 @@ import { getAoCDaily } from "aoc-dailies/lib/aoc/mod.ts";
 import { load, retry } from "aoc-dailies/deps.ts";
 import { getRandomMessage } from "aoc-dailies/lib/extra/messages.ts";
 
-// executeDiscordWebhook executes the Discord webhook at 5:00 AM UTC (midnight EST).
+/**
+ * executeDiscordWebhook executes the Discord webhook at 5:00 AM UTC (midnight EST).
+ */
 async function executeDiscordWebhook() {
+  // TODO: Move to ./lib/aoc-dailies/aoc-dailies.ts file.
   const date = new Date();
 
   const year = date.getFullYear();
   const day = date.getDate();
   const { title, description, url } = await getAoCDaily({ year, day });
 
-  const discordWebhookURL = Deno.env.get("DISCORD_WEBHOOK_URL")!;
+  const webhookURL = Deno.env.get("DISCORD_WEBHOOK_URL")!;
   await executeWebhook({
-    url: discordWebhookURL,
+    url: webhookURL,
     data: {
       embeds: [{
         color: 0x00cc00,
         url,
-        title: `---*** Advent of Code ${year} Day ${day}: ${title} ***---`,
+        title: `Advent of Code ${year} Day ${day}: ${title}`,
         fields: [{
           name: "Puzzle Description:",
           value: description.length > 500
@@ -37,8 +40,11 @@ async function executeDiscordWebhook() {
   });
 }
 
-// retryPromise will attempt to execute the callback until success or after 60 seconds.
+/**
+ * retryPromise will attempt to execute the callback until success or after 60 seconds.
+ */
 async function retryPromise() {
+  // TODO: Create thread.
   await retry(executeDiscordWebhook);
 }
 
