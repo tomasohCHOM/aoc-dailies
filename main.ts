@@ -19,7 +19,7 @@ async function executeDaily() {
       embeds: [{
         color: 0x00cc00,
         url,
-        title: `---*** Advent of Code ${year} Day ${day}: ${title} ***---`,
+        title: `Advent of Code ${year} Day ${day}: ${title}`,
         fields: [{
           name: "Puzzle Description:",
           value: description.length > 500
