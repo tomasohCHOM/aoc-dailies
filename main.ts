@@ -71,14 +71,14 @@ async function main() {
   await load({ export: true });
 
   // Execute daily reminder 5 minutes before 5:00 AM UTC
-  await Deno.cron(
+  Deno.cron(
     "Execute AOC daily reminder via retryPromise",
     "55 4 1-25 12 *",
     async () => await retryPromise(executeReminder),
   );
 
   // Execute daily message at 5:00 AM UTC
-  await Deno.cron(
+  Deno.cron(
     "Executing AOC message via retryPromise",
     "0 5 1-25 12 *",
     async () => await retryPromise(executeDaily),
