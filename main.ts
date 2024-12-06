@@ -86,8 +86,7 @@ async function main() {
   // Execute daily message at 5:00 AM UTC
   Deno.cron(
     "Executing AOC message via retryPromise",
-    // "0 5 1-25 12 *",
-    "* * * * *",
+    "0 5 1-25 12 *",
     async () => await retryPromise(executeDaily),
   );
 }
