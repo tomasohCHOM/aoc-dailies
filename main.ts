@@ -58,7 +58,7 @@ async function executeReminder() {
   const unixTimestamp = Math.floor(reminderTime.getTime() / 1000);
 
   const message =
-    `**<@&${ROLE_ID}> Advent Of Code ${utcYear} Day ${utcDate} release <t:${unixTimestamp}:R>!`;
+    `**<@&${ROLE_ID}> Advent Of Code ${utcYear} Day ${utcDate} releases <t:${unixTimestamp}:R>!**`;
 
   await executeWebhook({
     url: discordWebhookURL,
