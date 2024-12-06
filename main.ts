@@ -4,7 +4,9 @@ import { getAoCDaily } from "aoc-dailies/lib/aoc/mod.ts";
 import { load, retry } from "aoc-dailies/deps.ts";
 import { getRandomMessage } from "aoc-dailies/lib/extra/messages.ts";
 
-// Executes the AOC Daily Webhook message via an embed
+/**
+ * Executes the AOC daily Webhook message and sends it as an embed
+ */
 async function executeDaily() {
   const discordWebhookURL = Deno.env.get("DISCORD_WEBHOOK_URL")!;
   const date = new Date();
@@ -37,7 +39,9 @@ async function executeDaily() {
   });
 }
 
-// Webhook message
+/**
+ * Executes the AOC daily reminder (5 minutes before)
+ */
 async function executeReminder() {
   const discordWebhookURL = Deno.env.get("DISCORD_WEBHOOK_URL")!;
   const ROLE_ID = Deno.env.get("DISCORD_ROLE_ID") ?? "";
@@ -62,7 +66,9 @@ async function executeReminder() {
   });
 }
 
-// retryPromise will attempt to execute the callback until success or after 60 seconds
+/**
+ * retryPromise will attempt to execute the callback until success or after 60 seconds
+ */
 async function retryPromise(callback: () => Promise<void>) {
   await retry(callback);
 }
@@ -80,7 +86,8 @@ async function main() {
   // Execute daily message at 5:00 AM UTC
   Deno.cron(
     "Executing AOC message via retryPromise",
-    "0 5 1-25 12 *",
+    // "0 5 1-25 12 *",
+    "* * * * *",
     async () => await retryPromise(executeDaily),
   );
 }
