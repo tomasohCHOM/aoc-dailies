@@ -10,10 +10,14 @@ import { getRandomMessage } from "aoc-dailies/lib/extra/messages.ts";
 async function executeDaily() {
   const discordWebhookURL = Deno.env.get("DISCORD_WEBHOOK_URL")!;
   const date = new Date();
+  const year = date.getFullYear(), day = date.getDate();
 
-  const year = date.getFullYear();
-  const day = date.getDate();
-  const { title, description, url } = await getAoCDaily({ year, day });
+  const { text, title, description, url } = await getAoCDaily({ year, day });
+  const problemTxtFile = new File(
+    [text],
+    `AOC ${year} Daily Challenge #${day}.txt`,
+    { type: "text/plain" },
+  );
 
   await executeWebhook({
     url: discordWebhookURL,
@@ -36,6 +40,7 @@ async function executeDaily() {
         }],
       }],
     },
+    file: problemTxtFile,
   });
 }
 
@@ -44,7 +49,7 @@ async function executeDaily() {
  */
 async function executeReminder() {
   const discordWebhookURL = Deno.env.get("DISCORD_WEBHOOK_URL")!;
-  const ROLE_ID = Deno.env.get("DISCORD_ROLE_ID") ?? "";
+  const roleId = Deno.env.get("DISCORD_ROLE_ID") ?? "";
 
   const now = new Date();
   const utcYear = now.getUTCFullYear();
@@ -58,7 +63,7 @@ async function executeReminder() {
   const unixTimestamp = Math.floor(reminderTime.getTime() / 1000);
 
   const message =
-    `**<@&${ROLE_ID}> Advent Of Code ${utcYear} Day ${utcDate} releases <t:${unixTimestamp}:R>!**`;
+    `**<@&${roleId}> Advent Of Code ${utcYear} Day ${utcDate} releases <t:${unixTimestamp}:R>!**`;
 
   await executeWebhook({
     url: discordWebhookURL,

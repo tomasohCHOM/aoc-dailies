@@ -22,6 +22,11 @@ export interface AoCDailyOptions {
  */
 export interface AoCDaily {
   /**
+   * text is the plain text content of the puzzle.
+   */
+  text: string;
+
+  /**
    * title is the title of the puzzle.
    */
   title: string;
@@ -49,17 +54,19 @@ export async function getAoCDaily(options: AoCDailyOptions): Promise<AoCDaily> {
   }
 
   const text = document.querySelector("article.day-desc")?.textContent;
+  if (!text) {
+    throw new Error("Failed to obtain text content!");
+  }
   const title = text?.match(/--- Day \d+: (.+) ---/)?.[1] ?? "";
   if (!title) {
     throw new Error("Failed to parse title!");
   }
-
   const description = text?.match(/--- Day \d+: .+ ---((.|\n)+)/m)?.[1] ?? "";
   if (!description) {
     throw new Error("Failed to parse description!");
   }
 
-  return { title, description, url };
+  return { text, title, description, url };
 }
 
 /**
