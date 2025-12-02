@@ -53,7 +53,7 @@ async function executeReminder() {
 
   const now = new Date();
   const utcYear = now.getUTCFullYear();
-  const utcMonth = now.getUTCMonth(); // 0-based
+  const utcMonth = now.getUTCMonth();
   const utcDate = now.getUTCDate();
 
   // 5:00 AM UTC
@@ -84,14 +84,14 @@ async function main() {
   // Execute daily reminder 5 minutes before 5:00 AM UTC
   Deno.cron(
     "Execute AOC daily reminder via retryPromise",
-    "55 4 1-25 12 *",
+    "55 4 1-12 12 *",
     async () => await retryPromise(executeReminder),
   );
 
   // Execute daily message at 5:00 AM UTC
   Deno.cron(
     "Executing AOC message via retryPromise",
-    "0 5 1-25 12 *",
+    "0 5 1-12 12 *",
     async () => await retryPromise(executeDaily),
   );
 }
